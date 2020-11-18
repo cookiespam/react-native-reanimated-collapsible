@@ -1,3 +1,4 @@
+//https://github.com/salamancajr/react-native-reanimated-collapsible
 import React, { useMemo, useReducer } from 'react';
 import Animated, { Easing } from 'react-native-reanimated';
 import PropTypes from 'prop-types';
@@ -27,12 +28,13 @@ const reducer = (state, action) => {
 const AccordionWrapper = ({
   style,
   children,
-  expand,
-  initOpen = false,
+  minHeight = 0,
+  expand = false,
+  initOpen = true,
   duration = 400,
 }) => {
   const [reducerState, dispatch] = useReducer(reducer, {
-    height: new Value(0),
+    height: new Value(minHeight),
     done: false,
   });
 
@@ -40,8 +42,8 @@ const AccordionWrapper = ({
 
   let { animatedHeight, initOpenDone } = useMemo(
     () => ({
-      animatedHeight: new Value(0),
-      initOpenDone: new Value(0),
+      animatedHeight: new Value(minHeight),
+      initOpenDone: new Value(minHeight),
     }),
     [],
   );
@@ -51,7 +53,7 @@ const AccordionWrapper = ({
   useCode(() => {
     const state = {
       position: animatedHeight,
-      finished: new Value(0),
+      finished: new Value(minHeight),
       time: new Value(0),
       frameTime: new Value(0),
     };
@@ -72,7 +74,7 @@ const AccordionWrapper = ({
         timing(clock, state, config),
       ]),
       cond(eq(expand, initOpen ? 1 : 0), [
-        set(config.toValue, 0),
+        set(config.toValue, minHeight),
         startClock(clock),
         timing(clock, state, config),
       ]),
@@ -81,7 +83,7 @@ const AccordionWrapper = ({
 
   return (
     <Animated.View
-      onLayout={e => {
+      onLayout={(e) => {
         if (e.nativeEvent.layout.height && !done) {
           dispatch({
             type: 'initialize',
