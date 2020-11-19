@@ -1,3 +1,9 @@
+Forked this project to implement additional features/bug fixes.
+
+- Add support for minHeight prop
+- updated dependencies
+
+
 ## react-native-reanimated-collapsible
 
 Animated collapsible component for React Native using the native thread. Inspired by react-native-collapsible.
