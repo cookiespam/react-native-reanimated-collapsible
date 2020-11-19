@@ -32,6 +32,7 @@ const AccordionWrapper = ({
   expand = false,
   initOpen = true,
   duration = 400,
+  ...props
 }) => {
   const [reducerState, dispatch] = useReducer(reducer, {
     height: new Value(minHeight),
@@ -58,18 +59,18 @@ const AccordionWrapper = ({
       frameTime: new Value(0),
     };
     const config = {
-      toValue: height,
+      toValue: props.height ? new Value(props.height) : height,
       duration,
       easing: Easing.linear,
     };
 
     return block([
       cond(and(eq(initOpen, 1), eq(initOpenDone, 0)), [
-        set(animatedHeight, height),
+        set(animatedHeight, props.height ? new Value(props.height) : height),
         set(initOpenDone, 1),
       ]),
       cond(eq(expand, initOpen ? 0 : 1), [
-        set(config.toValue, height),
+        set(config.toValue, props.height ? new Value(props.height) : height),
         startClock(clock),
         timing(clock, state, config),
       ]),
@@ -83,7 +84,7 @@ const AccordionWrapper = ({
 
   return (
     <Animated.View
-      onLayout={(e) => {
+      onLayout={e => {
         if (e.nativeEvent.layout.height && !done) {
           dispatch({
             type: 'initialize',
@@ -113,6 +114,7 @@ AccordionWrapper.propTypes = {
   expand: PropTypes.bool.isRequired,
   initOpen: PropTypes.bool,
   duration: PropTypes.number,
+  height: PropTypes.number,
 };
 
 AccordionWrapper.defaultProps = {
