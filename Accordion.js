@@ -1,6 +1,6 @@
 //https://github.com/salamancajr/react-native-reanimated-collapsible
 import React, { useMemo, useReducer } from 'react';
-import Animated, { Easing } from 'react-native-reanimated';
+import Animated, { EasingNode } from 'react-native-reanimated';
 import PropTypes from 'prop-types';
 
 const {
@@ -61,7 +61,7 @@ const AccordionWrapper = ({
     const config = {
       toValue: props.height ? new Value(props.height) : height,
       duration,
-      easing: Easing.linear,
+      easing: EasingNode.linear,
     };
 
     return block([
